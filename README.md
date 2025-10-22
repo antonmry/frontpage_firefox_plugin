@@ -88,11 +88,12 @@ This repository includes `.github/workflows/package-extension.yml` which builds 
 
 1. Configure `AMO_JWT_ISSUER` and `AMO_JWT_SECRET` repository secrets with your AMO API credentials if you want automatic signing.  
    Without the secrets, the workflow still produces an unsigned ZIP you can download.
-2. Trigger the workflow manually (`Actions` → **package-extension** → **Run workflow**) or push changes to `main`.
+2. Trigger the workflow manually (`Actions` → **package-extension** → **Run workflow**).
 3. Download the artifacts:
    - `frontpage-extension-unsigned` contains the ZIP that `web-ext build` generates.
    - `frontpage-extension-signed` (only when secrets are present) contains the signed `.xpi` from AMO for self-hosting.
 4. Each run also publishes a GitHub Release (tagged `v<version>-<run-id>`) that ships the same ZIP/XPI assets, so you can share a permanent download link.
+   - Mozilla requires every signed upload to have a unique version number. Bump `version` in `extension/manifest.json` before rerunning the workflow if you need a new signed package.
 
 These artifacts can be hosted directly for self-distribution as described in the [Mozilla documentation](https://extensionworkshop.com/documentation/publish/self-distribution/).
 

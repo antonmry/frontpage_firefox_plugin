@@ -56,10 +56,22 @@ jobs:
             echo "AMO credentials not provided. Skipping signing step."
             exit 0
           fi
+          set +e
           web-ext sign \
             --channel=unlisted \
             --source-dir ./extension \
-            --artifacts-dir ./web-ext-artifacts
+            --artifacts-dir ./web-ext-artifacts 2>&1 | tee ./sign.log
+          rc=${PIPESTATUS[0]}
+          set -e
+          if [ $rc -ne 0 ]; then
+            if grep -q "Version ${VERSION} already exists" ./sign.log; then
+              echo "AMO already has version ${VERSION}; skipping signing."
+              exit 0
+            fi
+            echo "Signing failed:"
+            cat ./sign.log
+            exit $rc
+          fi
 
       - name: Rename signed archive (optional)
         if: ${{ hashFiles('web-ext-artifacts/*.xpi') != '' }}
