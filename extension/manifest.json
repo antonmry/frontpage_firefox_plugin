@@ -3,6 +3,14 @@
   "name": "Frontpage Submitter",
   "description": "Quickly share the current tab to frontpage.fyi via ATProto.",
   "version": "0.1.0",
+  "author": "Frontpage Submitter Contributors",
+  "homepage_url": "https://frontpage.fyi",
+  "icons": {
+    "16": "icons/icon-16.svg",
+    "32": "icons/icon-32.svg",
+    "48": "icons/icon-48.svg",
+    "128": "icons/icon-128.svg"
+  },
   "permissions": [
     "storage",
     "tabs",
@@ -12,11 +20,17 @@
     "https://*/*"
   ],
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.svg",
+      "32": "icons/icon-32.svg"
+    },
+    "default_title": "Post to Frontpage"
   },
   "options_ui": {
     "page": "options.html",
-    "open_in_tab": true
+    "open_in_tab": true,
+    "browser_style": true
   },
   "background": {
     "scripts": [
@@ -26,7 +40,8 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "frontpage-submitter@example.com"
+      "id": "frontpage-submitter@example.com",
+      "strict_min_version": "109.0"
     }
   }
 }

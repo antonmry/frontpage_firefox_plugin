@@ -60,4 +60,24 @@ extension/
 
 - Inspect background/service-worker logs from `about:debugging` → **Inspect**.
 - The UI scripts (`popup.js` and `options.js`) log to the DevTools console attached to their respective documents.
-- When packaging for distribution, zip the contents of the `extension/` directory.
+- When packaging for distribution, zip the contents of the `extension/` directory (see workflow below).
+
+### Ship it on AMO
+
+- Provide the bundled icons from `extension/icons/` (16, 32, 48 and 128 px SVGs).
+- Zip the `extension/` directory (e.g. `cd extension && zip -r ../frontpage-submitter.zip .`).
+- Upload the archive to <https://addons.mozilla.org/developers/> and fill in the listing copy/screenshots.
+- AMO reviewers expect a concise summary; you can adapt the “Features” bullets above.
+
+### Self-distribution pipeline
+
+This repository includes `.github/workflows/package-extension.yml` which builds (and optionally signs) the add-on using [`web-ext`](https://extensionworkshop.com/documentation/develop/web-ext-command-reference/).
+
+1. Configure `AMO_JWT_ISSUER` and `AMO_JWT_SECRET` repository secrets with your AMO API credentials if you want automatic signing.  
+   Without the secrets, the workflow still produces an unsigned ZIP you can download.
+2. Trigger the workflow manually (`Actions` → **package-extension** → **Run workflow**) or push changes to `main`.
+3. Download the artifacts:
+   - `frontpage-extension-unsigned` contains the ZIP that `web-ext build` generates.
+   - `frontpage-extension-signed` (only when secrets are present) contains the signed `.xpi` from AMO for self-hosting.
+
+These artifacts can be hosted directly for self-distribution as described in the [Mozilla documentation](https://extensionworkshop.com/documentation/publish/self-distribution/).

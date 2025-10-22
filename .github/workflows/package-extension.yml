@@ -1,0 +1,55 @@
+name: package-extension
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "extension/**"
+      - ".github/workflows/package-extension.yml"
+
+jobs:
+  build:
+    name: Build unsigned bundle
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install web-ext
+        run: npm install --global web-ext
+
+      - name: Build unsigned archive
+        run: web-ext build --source-dir ./extension --artifacts-dir ./web-ext-artifacts
+
+      - name: Upload unsigned artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontpage-extension-unsigned
+          path: web-ext-artifacts/**
+
+      - name: Sign using AMO (optional)
+        if: ${{ secrets.AMO_JWT_ISSUER && secrets.AMO_JWT_SECRET }}
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+          WEB_EXT_ID: frontpage-submitter@example.com
+        run: |
+          web-ext sign \
+            --channel=unlisted \
+            --source-dir ./extension \
+            --artifacts-dir ./web-ext-artifacts
+
+      - name: Upload signed artifact (optional)
+        if: ${{ secrets.AMO_JWT_ISSUER && secrets.AMO_JWT_SECRET }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontpage-extension-signed
+          path: web-ext-artifacts/*.xpi

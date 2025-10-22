@@ -1,3 +1,4 @@
+const browser = globalThis.browser ?? globalThis.chrome;
 const STORAGE_KEY = "frontpageAuth";
 const FRONTPAGE_COLLECTION = "fyi.unravel.frontpage.post";
 const RECORD_TYPE = "fyi.unravel.frontpage.post";
