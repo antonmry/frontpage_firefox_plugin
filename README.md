@@ -3,7 +3,7 @@
 This repository provides a Firefox WebExtension that lets you share the current tab to [frontpage.fyi](https://frontpage.fyi) with minimal effort.  
 Links are submitted by creating `fyi.unravel.frontpage.post` records on your ATProto account, the same mechanism the official Frontpage site uses.
 
-> ℹ️ The Frontpage source code lives at <https://tangled.org/did:plc:klmr76mpewpv7rtm3xgpzd7x/frontpage>.
+> ℹ️ This repository is hosted on [tangled](https://tangled.org/@galiglobal.com/frontpage_firefox_plugin) (PRs, issues) and [GitHub](https://github.com/antonmry/frontpage_firefox_plugin) (CI/CD, releases).
 
 ### Features
 
