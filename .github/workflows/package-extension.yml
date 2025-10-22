@@ -14,6 +14,8 @@ jobs:
     name: Build unsigned bundle
     runs-on: ubuntu-latest
     environment: "Default"
+    permissions:
+      contents: write
     env:
       AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
       AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
@@ -40,20 +42,42 @@ jobs:
           path: web-ext-artifacts/**
 
       - name: Sign using AMO (optional)
-        if: ${{ env.AMO_JWT_ISSUER != '' && env.AMO_JWT_SECRET != '' }}
         env:
           WEB_EXT_API_KEY: ${{ env.AMO_JWT_ISSUER }}
           WEB_EXT_API_SECRET: ${{ env.AMO_JWT_SECRET }}
           WEB_EXT_ID: frontpage-submitter@example.com
         run: |
+          if [ -z "${WEB_EXT_API_KEY}" ] || [ -z "${WEB_EXT_API_SECRET}" ]; then
+            echo "AMO credentials not provided. Skipping signing step."
+            exit 0
+          fi
           web-ext sign \
             --channel=unlisted \
             --source-dir ./extension \
             --artifacts-dir ./web-ext-artifacts
 
       - name: Upload signed artifact (optional)
-        if: ${{ env.AMO_JWT_ISSUER != '' && env.AMO_JWT_SECRET != '' }}
+        if: ${{ hashFiles('web-ext-artifacts/*.xpi') != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: frontpage-extension-signed
           path: web-ext-artifacts/*.xpi
+
+      - name: Capture version info
+        run: |
+          VERSION=$(node -pe "require('./extension/manifest.json').version")
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "TAG=v${VERSION}-${GITHUB_RUN_ID}" >> $GITHUB_ENV
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: Frontpage Submitter ${{ env.VERSION }} (build ${{ github.run_number }})
+          draft: false
+          prerelease: true
+          generate_release_notes: false
+          files: |
+            web-ext-artifacts/*.zip
+            web-ext-artifacts/*.xpi
+          fail_on_unmatched_files: false

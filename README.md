@@ -92,5 +92,6 @@ This repository includes `.github/workflows/package-extension.yml` which builds 
 3. Download the artifacts:
    - `frontpage-extension-unsigned` contains the ZIP that `web-ext build` generates.
    - `frontpage-extension-signed` (only when secrets are present) contains the signed `.xpi` from AMO for self-hosting.
+4. Each run also publishes a GitHub Release (tagged `v<version>-<run-id>`) that ships the same ZIP/XPI assets, so you can share a permanent download link.
 
 These artifacts can be hosted directly for self-distribution as described in the [Mozilla documentation](https://extensionworkshop.com/documentation/publish/self-distribution/).
