@@ -9,7 +9,6 @@
     "vscode": {
       "extensions": [
         "ms-vsliveshare.vsliveshare",
-        "rust-lang.rust-analyzer",
         "dbaeumer.vscode-eslint"
       ]
     }
