@@ -13,39 +13,16 @@ Links are submitted by creating `fyi.unravel.frontpage.post` records on your ATP
 - Options page for storing your handle, app password, and optional PDS override.
 - Convenience links to open frontpage.fyi or the options page from the pop-up.
 
-### Repository layout
-
-```
-extension/
-├── background.js   # Service worker for auth + ATProto requests
-├── manifest.json   # Manifest V3 definition
-├── options.html/js # Credential management UI
-├── popup.html/js   # Submission UI
-└── styles.css      # Shared styling for popup and options
-```
-
 ### Prerequisites
 
 - An ATProto account that Frontpage can read.
 - An app password for that account (create one at <https://bsky.app/settings/app-passwords> or via your own PDS).
 
-### Development install (temporary)
-
-1. Open `about:debugging#/runtime/this-firefox`.
-2. Click **Load Temporary Add-on…** and choose `manifest.json` inside the `extension/` directory.
-3. Pin the “Frontpage” toolbar button if you want quick access.
-
-> This method is ideal while iterating; Firefox forgets the add-on on restart.
-
 ### Install a packaged build
-
-After the GitHub Action finishes:
 
 1. Visit the [Releases](https://github.com/antonmry/frontpage_firefox_plugin/releases) page and download the latest `frontpage-submitter-<version>.xpi` (signed) or `.zip` (unsigned) asset.
 2. In Firefox, open `about:addons`, click the gear icon, and choose **Install Add-on From File…**.
 3. Select the downloaded `.xpi` (preferred) or `.zip` to complete the installation and approve the permissions prompt.
-
-For ongoing self-distribution, host the generated `.xpi`/`.zip` on your own site, following Mozilla’s [self-distribution guide](https://extensionworkshop.com/documentation/publish/self-distribution/).
 
 ### Configure credentials
 
@@ -75,12 +52,13 @@ For ongoing self-distribution, host the generated `.xpi`/`.zip` on your own site
 - When packaging for distribution, zip the contents of the `extension/` directory (see workflow below).
 - Licensed under the [Apache License 2.0](./LICENSE).
 
-### Ship it on AMO
+### Development install (temporary)
 
-- Provide the bundled icons from `extension/icons/` (16, 32, 48 and 128 px SVGs).
-- Zip the `extension/` directory (e.g. `cd extension && zip -r ../frontpage-submitter.zip .`).
-- Upload the archive to <https://addons.mozilla.org/developers/> and fill in the listing copy/screenshots.
-- AMO reviewers expect a concise summary; you can adapt the “Features” bullets above.
+1. Open `about:debugging#/runtime/this-firefox`.
+2. Click **Load Temporary Add-on…** and choose `manifest.json` inside the `extension/` directory.
+3. Pin the “Frontpage” toolbar button if you want quick access.
+
+> This method is ideal while iterating; Firefox forgets the add-on on restart.
 
 ### Self-distribution pipeline
 
@@ -96,9 +74,3 @@ This repository includes `.github/workflows/package-extension.yml` which builds 
    - Mozilla requires every signed upload to have a unique version number. Bump `version` in `extension/manifest.json` before rerunning the workflow if you need a new signed package.
 
 These artifacts can be hosted directly for self-distribution as described in the [Mozilla documentation](https://extensionworkshop.com/documentation/publish/self-distribution/).
-
-### AMO listing reference
-
-- **Description**: “Quickly share the current tab to frontpage.fyi via ATProto. The extension auto-fills the title and link, handles ATProto login/refresh, and posts to Frontpage from your Firefox toolbar.”
-- **Tags**: `productivity`, `social`, `news`, `atproto`
-- **Contributions URL**: <https://github.com/antonmry/frontpage_firefox_plugin/>
