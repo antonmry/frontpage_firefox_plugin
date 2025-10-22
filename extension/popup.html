@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Frontpage Submitter</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="popup">
+      <header>
+        <h1>Frontpage</h1>
+        <button id="open-options" type="button" title="Configure account">⚙</button>
+      </header>
+      <form id="submit-form">
+        <label for="title">
+          Title
+          <span id="title-count" class="counter">0/120</span>
+        </label>
+        <input id="title" name="title" type="text" maxlength="120" required />
+
+        <label for="url">
+          URL
+        </label>
+        <input id="url" name="url" type="url" required />
+
+        <button id="submit-btn" type="submit">Post to Frontpage</button>
+      </form>
+      <p id="status" role="status" aria-live="polite"></p>
+      <footer>
+        <a id="open-frontpage" href="https://frontpage.fyi" target="_blank" rel="noreferrer">Open frontpage.fyi</a>
+      </footer>
+    </main>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>

@@ -1,0 +1,155 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+main.popup {
+  width: 320px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+main.popup header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+main.popup h1 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+main.popup button,
+main.popup input {
+  font: inherit;
+}
+
+#open-options {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+input {
+  padding: 6px 8px;
+  border: 1px solid #cbd5f5;
+  border-radius: 6px;
+  background: white;
+}
+
+button[type="submit"],
+button.secondary {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+}
+
+button[disabled] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+button.secondary {
+  background: #e2e8f0;
+  color: #0f172a;
+  border: 1px solid #cbd5f5;
+}
+
+.status {
+  min-height: 1.2em;
+  font-size: 0.85rem;
+}
+
+.status.error {
+  color: #dc2626;
+}
+
+.status.success {
+  color: #0f766e;
+}
+
+.counter {
+  font-weight: normal;
+  color: #64748b;
+}
+
+.over-limit {
+  color: #b91c1c;
+}
+
+footer {
+  font-size: 0.85rem;
+}
+
+main.options {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+main.options h1 {
+  margin-bottom: 8px;
+}
+
+main.options section {
+  background: white;
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+main.options form {
+  max-width: 400px;
+}
+
+main.options .tips {
+  margin: 0;
+  padding-left: 20px;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.help {
+  margin: 0;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+a {
+  color: #2563eb;
+}

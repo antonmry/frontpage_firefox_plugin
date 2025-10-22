@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Frontpage Submitter Options</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="options">
+      <h1>Frontpage Submitter</h1>
+      <section>
+        <h2>Account</h2>
+        <p class="help">
+          Sign in with your Frontpage / ATProto handle and an app password. You can manage app
+          passwords in the
+          <a href="https://bsky.app/settings/app-passwords" target="_blank" rel="noreferrer">Bluesky settings</a>
+          or on your self-hosted PDS.
+        </p>
+        <form id="login-form">
+          <label for="handle">Handle</label>
+          <input id="handle" name="handle" type="text" placeholder="you.example.com" required />
+
+          <label for="password">App password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+
+          <label for="pds">PDS URL (optional override)</label>
+          <input
+            id="pds"
+            name="pds"
+            type="url"
+            placeholder="https://pds.example.com"
+            autocomplete="url"
+          />
+
+          <button type="submit" id="login-btn">Save credentials</button>
+        </form>
+        <button type="button" id="logout-btn" class="secondary">Log out</button>
+        <p id="auth-status" role="status" aria-live="polite"></p>
+      </section>
+
+      <section>
+        <h2>How it works</h2>
+        <ul class="tips">
+          <li>The add-on stores your tokens locally using Firefox storage.</li>
+          <li>Links are published as <code>fyi.unravel.frontpage.post</code> records on your ATProto account.</li>
+          <li>Your PDS is discovered from your handle automatically unless you provide a custom URL.</li>
+        </ul>
+      </section>
+    </main>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

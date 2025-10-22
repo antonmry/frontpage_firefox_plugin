@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "Frontpage Submitter",
+  "description": "Quickly share the current tab to frontpage.fyi via ATProto.",
+  "version": "0.1.0",
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://*/*"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "persistent": false
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "frontpage-submitter@example.com"
+    }
+  }
+}
