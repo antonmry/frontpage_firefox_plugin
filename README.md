@@ -74,3 +74,8 @@ This repository includes `.github/workflows/package-extension.yml` which builds 
    - Mozilla requires every signed upload to have a unique version number. Bump `version` in `extension/manifest.json` before rerunning the workflow if you need a new signed package.
 
 These artifacts can be hosted directly for self-distribution as described in the [Mozilla documentation](https://extensionworkshop.com/documentation/publish/self-distribution/).
+
+### Tangled mirror
+
+The `mirror-to-tangled.yml` workflow pushes every commit on `main` to `git@tangled.sh:galiglobal.com/frontpage_firefox_plugin`.  
+Add a deploy key with write access as the `TANGLED_DEPLOY_KEY` repository secret so the mirror stays up to date.
