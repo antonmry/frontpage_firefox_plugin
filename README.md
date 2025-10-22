@@ -29,11 +29,24 @@ extension/
 - An ATProto account that Frontpage can read.
 - An app password for that account (create one at <https://bsky.app/settings/app-passwords> or via your own PDS).
 
-### Load the add-on in Firefox
+### Development install (temporary)
 
 1. Open `about:debugging#/runtime/this-firefox`.
 2. Click **Load Temporary Add-on…** and choose `manifest.json` inside the `extension/` directory.
 3. Pin the “Frontpage” toolbar button if you want quick access.
+
+> This method is ideal while iterating; Firefox forgets the add-on on restart.
+
+### Install a packaged build
+
+After the GitHub Action finishes:
+
+1. Download the `frontpage-extension-unsigned` (or `frontpage-extension-signed` if signing is enabled) artifact from the workflow run.
+2. If unsigned, extract the ZIP that `web-ext` produced and re-zip it as needed, or use the ZIP as-is for self-hosting.
+3. In Firefox, open `about:addons` → click the gear icon → **Install Add-on From File…**, then select the `.zip` or `.xpi`.
+4. Firefox will install the add-on; confirm the permissions dialog to finish.
+
+For ongoing self-distribution, host the resulting `.zip`/`.xpi` on your own site and point Firefox users there, following Mozilla’s [self-distribution guide](https://extensionworkshop.com/documentation/publish/self-distribution/).
 
 ### Configure credentials
 
