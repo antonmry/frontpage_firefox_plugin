@@ -2,12 +2,6 @@ name: package-extension
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - "extension/**"
-      - ".github/workflows/package-extension.yml"
 
 jobs:
   build:
@@ -35,11 +29,22 @@ jobs:
       - name: Build unsigned archive
         run: web-ext build --source-dir ./extension --artifacts-dir ./web-ext-artifacts
 
+      - name: Determine version
+        run: |
+          VERSION=$(node -pe "require('./extension/manifest.json').version")
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "TAG=v${VERSION}-${GITHUB_RUN_ID}" >> $GITHUB_ENV
+
+      - name: Rename unsigned archive
+        run: |
+          ZIP_PATH=$(ls web-ext-artifacts/*.zip)
+          mv "$ZIP_PATH" "web-ext-artifacts/frontpage-submitter-${VERSION}.zip"
+
       - name: Upload unsigned artifact
         uses: actions/upload-artifact@v4
         with:
           name: frontpage-extension-unsigned
-          path: web-ext-artifacts/**
+          path: web-ext-artifacts/frontpage-submitter-${{ env.VERSION }}.zip
 
       - name: Sign using AMO (optional)
         env:
@@ -56,18 +61,18 @@ jobs:
             --source-dir ./extension \
             --artifacts-dir ./web-ext-artifacts
 
+      - name: Rename signed archive (optional)
+        if: ${{ hashFiles('web-ext-artifacts/*.xpi') != '' }}
+        run: |
+          XPI_PATH=$(ls web-ext-artifacts/*.xpi)
+          mv "$XPI_PATH" "web-ext-artifacts/frontpage-submitter-${VERSION}.xpi"
+
       - name: Upload signed artifact (optional)
         if: ${{ hashFiles('web-ext-artifacts/*.xpi') != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: frontpage-extension-signed
           path: web-ext-artifacts/*.xpi
-
-      - name: Capture version info
-        run: |
-          VERSION=$(node -pe "require('./extension/manifest.json').version")
-          echo "VERSION=${VERSION}" >> $GITHUB_ENV
-          echo "TAG=v${VERSION}-${GITHUB_RUN_ID}" >> $GITHUB_ENV
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2

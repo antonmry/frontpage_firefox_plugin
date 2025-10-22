@@ -41,12 +41,11 @@ extension/
 
 After the GitHub Action finishes:
 
-1. Download the `frontpage-extension-unsigned` (or `frontpage-extension-signed` if signing is enabled) artifact from the workflow run.
-2. If unsigned, extract the ZIP that `web-ext` produced and re-zip it as needed, or use the ZIP as-is for self-hosting.
-3. In Firefox, open `about:addons` → click the gear icon → **Install Add-on From File…**, then select the `.zip` or `.xpi`.
-4. Firefox will install the add-on; confirm the permissions dialog to finish.
+1. Visit the [Releases](https://github.com/antonmry/frontpage_firefox_plugin/releases) page and download the latest `frontpage-submitter-<version>.xpi` (signed) or `.zip` (unsigned) asset.
+2. In Firefox, open `about:addons`, click the gear icon, and choose **Install Add-on From File…**.
+3. Select the downloaded `.xpi` (preferred) or `.zip` to complete the installation and approve the permissions prompt.
 
-For ongoing self-distribution, host the resulting `.zip`/`.xpi` on your own site and point Firefox users there, following Mozilla’s [self-distribution guide](https://extensionworkshop.com/documentation/publish/self-distribution/).
+For ongoing self-distribution, host the generated `.xpi`/`.zip` on your own site, following Mozilla’s [self-distribution guide](https://extensionworkshop.com/documentation/publish/self-distribution/).
 
 ### Configure credentials
 
@@ -74,6 +73,7 @@ For ongoing self-distribution, host the resulting `.zip`/`.xpi` on your own site
 - Inspect background/service-worker logs from `about:debugging` → **Inspect**.
 - The UI scripts (`popup.js` and `options.js`) log to the DevTools console attached to their respective documents.
 - When packaging for distribution, zip the contents of the `extension/` directory (see workflow below).
+- Licensed under the [Apache License 2.0](./LICENSE).
 
 ### Ship it on AMO
 
@@ -95,3 +95,9 @@ This repository includes `.github/workflows/package-extension.yml` which builds 
 4. Each run also publishes a GitHub Release (tagged `v<version>-<run-id>`) that ships the same ZIP/XPI assets, so you can share a permanent download link.
 
 These artifacts can be hosted directly for self-distribution as described in the [Mozilla documentation](https://extensionworkshop.com/documentation/publish/self-distribution/).
+
+### AMO listing reference
+
+- **Description**: “Quickly share the current tab to frontpage.fyi via ATProto. The extension auto-fills the title and link, handles ATProto login/refresh, and posts to Frontpage from your Firefox toolbar.”
+- **Tags**: `productivity`, `social`, `news`, `atproto`
+- **Contributions URL**: <https://github.com/antonmry/frontpage_firefox_plugin/>
