@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Frontpage Submitter",
   "description": "Quickly share the current tab to frontpage.fyi via ATProto.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Frontpage Submitter Contributors",
   "homepage_url": "https://frontpage.fyi",
   "icons": {
