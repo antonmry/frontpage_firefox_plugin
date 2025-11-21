@@ -1,7 +1,7 @@
 const browser = globalThis.browser ?? globalThis.chrome;
 const STORAGE_KEY = "frontpageAuth";
-const FRONTPAGE_COLLECTION = "fyi.unravel.frontpage.post";
-const RECORD_TYPE = "fyi.unravel.frontpage.post";
+const FRONTPAGE_COLLECTION = "fyi.frontpage.feed.post";
+const RECORD_TYPE = "fyi.frontpage.feed.post";
 const DEFAULT_MAX_TITLE = 120;
 const DEFAULT_MAX_URL = 2048;
 
@@ -132,7 +132,7 @@ async function createFrontpageRecord({ title, url }, authOverride) {
     record: {
       $type: RECORD_TYPE,
       title: trimmedTitle,
-      url: trimmedUrl,
+      subject: { url: trimmedUrl },
       createdAt: new Date().toISOString()
     }
   };
