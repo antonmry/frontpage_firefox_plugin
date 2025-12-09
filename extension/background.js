@@ -132,7 +132,7 @@ async function createFrontpageRecord({ title, url }, authOverride) {
     record: {
       $type: RECORD_TYPE,
       title: trimmedTitle,
-      subject: { url: trimmedUrl },
+      subject: { $type: "fyi.frontpage.feed.post#urlSubject", url: trimmedUrl },
       createdAt: new Date().toISOString()
     }
   };
