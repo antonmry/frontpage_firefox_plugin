@@ -27,7 +27,7 @@ jobs:
 
       - name: Push to Tangled
         env:
-          TARGET_REMOTE: git@tangled.sh:galiglobal.com/frontpage_firefox_plugin
+          TARGET_REMOTE: git@tangled.sh:anton.galiglobal.com/frontpage_firefox_plugin
         run: |
           if git remote | grep -q '^tangled$'; then
             git remote set-url tangled "${TARGET_REMOTE}"
