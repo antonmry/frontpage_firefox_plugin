@@ -184,7 +184,7 @@ async function createMarginRecord({ url, title, exact, prefix, suffix, comment }
   };
 
   const generator = {
-    id: "https://github.com/Galiglobal/frontpage_firefox_plugin",
+    id: "https://github.com/antonmry/atproto_firefox_plugin",
     name: "Frontpage Submitter"
   };
 
