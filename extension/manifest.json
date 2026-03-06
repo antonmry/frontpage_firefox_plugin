@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
   "name": "ATProto Social",
-  "description": "Quickly share the current tab to frontpage.fyi via ATProto.",
-  "version": "0.1.5",
+  "description": "Quickly share the current tab to different ATProto services.",
+  "version": "0.1.6",
   "author": "ATProto Social Contributors",
-  "homepage_url": "https://frontpage.fyi",
+  "homepage_url": "https://tangled.org/anton.galiglobal.com/frontpage_firefox_plugin",
   "icons": {
     "16": "icons/icon-16.svg",
     "32": "icons/icon-32.svg",

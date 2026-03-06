@@ -1,21 +1,24 @@
-## frontpage.fyi Firefox extension
+## ATProto Social — Firefox extension
 
-This repository provides a Firefox WebExtension that lets you share the current tab to [frontpage.fyi](https://frontpage.fyi) with minimal effort.  
-Links are submitted by creating `fyi.frontpage.feed.post` records on your ATProto account, the same mechanism the official Frontpage site uses.
+A Firefox WebExtension for publishing to ATProto-based social platforms directly from your browser.
 
-> ℹ️ This repository is hosted on [tangled](https://tangled.org/@galiglobal.com/frontpage_firefox_plugin) (PRs, issues) and [GitHub](https://github.com/antonmry/frontpage_firefox_plugin) (CI/CD, releases).
+> ℹ️ This repository is hosted on [tangled](https://tangled.org/anton.galiglobal.com/frontpage_firefox_plugin) (PRs, issues) and [GitHub](https://github.com/antonmry/frontpage_firefox_plugin) (CI/CD, releases).
 
 ### Features
 
-- Pop-up form that auto-fills the active tab’s title and URL.
-- Title length indicator (120 characters, matching the Frontpage UI).
-- Background service worker handles ATProto login, token refresh, and record creation.
+- **Margin tab** — select text on any page and publish it as a highlight or annotation to [margin.at](https://margin.at):
+  - No comment → creates an `at.margin.highlight` record.
+  - With comment → creates an `at.margin.annotation` record (`motivation: commenting`).
+  - Uses the W3C `TextQuoteSelector` (exact text + surrounding context) for precise targeting.
+- **Frontpage tab** — share the current tab to [frontpage.fyi](https://frontpage.fyi) by creating a `fyi.frontpage.feed.post` record on your ATProto account.
+  - Auto-fills the active tab's title and URL.
+  - Title length indicator (120 character limit).
+- Background service worker handles ATProto login, token refresh, and record creation for both services.
 - Options page for storing your handle, app password, and optional PDS override.
-- Convenience links to open frontpage.fyi or the options page from the pop-up.
 
 ### Prerequisites
 
-- An ATProto account that Frontpage can read.
+- An ATProto account (Bluesky or self-hosted PDS).
 - An app password for that account (create one at <https://bsky.app/settings/app-passwords> or via your own PDS).
 
 ### Install a packaged build
@@ -31,18 +34,26 @@ Links are submitted by creating `fyi.frontpage.feed.post` records on your ATProt
 3. Click **Save credentials**. A success message confirms that the session tokens are stored locally.
 4. Use **Log out** at any time to remove stored tokens (you can also revoke the app password server-side).
 
-### Submit a link
+### Publish a highlight or annotation (Margin)
+
+1. Select text on any webpage.
+2. Open the ATProto Social pop-up — the **Margin** tab opens by default with the selected text pre-filled.
+3. Optionally add a comment (turns a highlight into an annotation).
+4. Click **Highlight on Margin** or **Annotate on Margin**.
+
+### Submit a link (Frontpage)
 
 1. Browse to the page you want to share.
-2. Open the Frontpage pop-up; the title and URL are pre-filled.
+2. Open the ATProto Social pop-up and switch to the **Frontpage** tab; the title and URL are pre-filled.
 3. Adjust the text if necessary and click **Post to Frontpage**.
 4. On success, the pop-up reports the record URI returned by `com.atproto.repo.createRecord`.
 
 ### Implementation notes
 
-- The background worker discovers the user’s PDS by resolving the handle (`com.atproto.identity.resolveHandle` + PLC lookup).
+- The background worker discovers the user's PDS by resolving the handle (`com.atproto.identity.resolveHandle` + PLC lookup).
 - Sessions are refreshed automatically via `com.atproto.server.refreshSession` when the access JWT expires.
 - All data stays in `browser.storage.local`; nothing is transmitted to third-party services beyond the ATProto endpoints.
+- Margin records use the `at.margin.annotation` and `at.margin.highlight` lexicons with a `TextQuoteSelector` for text targeting.
 - Maximum lengths follow the current Frontpage limits (120 characters for the title, 2048 for URLs).
 
 ### Development tips
@@ -56,7 +67,7 @@ Links are submitted by creating `fyi.frontpage.feed.post` records on your ATProt
 
 1. Open `about:debugging#/runtime/this-firefox`.
 2. Click **Load Temporary Add-on…** and choose `manifest.json` inside the `extension/` directory.
-3. Pin the “Frontpage” toolbar button if you want quick access.
+3. Pin the "ATProto Social" toolbar button if you want quick access.
 
 > This method is ideal while iterating; Firefox forgets the add-on on restart.
 
@@ -64,7 +75,7 @@ Links are submitted by creating `fyi.frontpage.feed.post` records on your ATProt
 
 This repository includes `.github/workflows/package-extension.yml` which builds (and optionally signs) the add-on using [`web-ext`](https://extensionworkshop.com/documentation/develop/web-ext-command-reference/).
 
-1. Configure `AMO_JWT_ISSUER` and `AMO_JWT_SECRET` repository secrets with your AMO API credentials if you want automatic signing.  
+1. Configure `AMO_JWT_ISSUER` and `AMO_JWT_SECRET` repository secrets with your AMO API credentials if you want automatic signing.
    Without the secrets, the workflow still produces an unsigned ZIP you can download.
 2. Trigger the workflow manually (`Actions` → **package-extension** → **Run workflow**).
 3. Download the artifacts:
@@ -77,6 +88,6 @@ These artifacts can be hosted directly for self-distribution as described in the
 
 ### Tangled mirror
 
-The `mirror-to-tangled.yml` workflow pushes every commit on `main` to Tangled, a federated Git hosting platform built on ATProto.  
-Browse the mirror at <https://tangled.org/@galiglobal.com/frontpage_firefox_plugin>.  
+The `mirror-to-tangled.yml` workflow pushes every commit on `main` to Tangled, a federated Git hosting platform built on ATProto.
+Browse the mirror at <https://tangled.org/anton.galiglobal.com/frontpage_firefox_plugin>.
 Add a deploy key with write access as the `TANGLED_DEPLOY_KEY` repository secret so the mirror stays up to date.
