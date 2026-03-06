@@ -160,10 +160,90 @@ async function createFrontpageRecord({ title, url }, authOverride) {
   return res.json();
 }
 
+const MARGIN_ANNOTATION_COLLECTION = "at.margin.annotation";
+const MARGIN_HIGHLIGHT_COLLECTION = "at.margin.highlight";
+
+async function createMarginRecord({ url, title, exact, prefix, suffix, comment }, authOverride) {
+  if (!url) throw new Error("URL is required.");
+  if (!exact) throw new Error("Selected text is required.");
+
+  const auth = authOverride ?? (await ensureSession());
+
+  const selector = {
+    $type: "at.margin.annotation#textQuoteSelector",
+    exact,
+    ...(prefix ? { prefix } : {}),
+    ...(suffix ? { suffix } : {})
+  };
+
+  const target = {
+    $type: "at.margin.annotation#target",
+    source: url,
+    ...(title ? { title } : {}),
+    selector
+  };
+
+  const generator = {
+    id: "https://github.com/Galiglobal/frontpage_firefox_plugin",
+    name: "Frontpage Submitter"
+  };
+
+  const hasComment = comment && comment.trim();
+  const collection = hasComment ? MARGIN_ANNOTATION_COLLECTION : MARGIN_HIGHLIGHT_COLLECTION;
+
+  const record = hasComment
+    ? {
+        $type: MARGIN_ANNOTATION_COLLECTION,
+        motivation: "commenting",
+        body: { value: comment.trim(), format: "text/plain" },
+        target,
+        generator,
+        createdAt: new Date().toISOString()
+      }
+    : {
+        $type: MARGIN_HIGHLIGHT_COLLECTION,
+        target,
+        generator,
+        createdAt: new Date().toISOString()
+      };
+
+  const body = {
+    repo: auth.did,
+    collection,
+    record
+  };
+
+  const res = await fetch(`${auth.pds}/xrpc/com.atproto.repo.createRecord`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${auth.accessJwt}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (res.status === 401 && !authOverride) {
+    const refreshed = await refreshSession(auth);
+    return createMarginRecord({ url, title, exact, prefix, suffix, comment }, refreshed);
+  }
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(`Post failed (${res.status}): ${errorText || res.statusText}`);
+  }
+
+  return res.json();
+}
+
 browser.runtime.onMessage.addListener((message) => {
   switch (message?.type) {
     case "frontpage-submit":
       return createFrontpageRecord(message.payload).then(
+        (result) => ({ ok: true, result }),
+        (error) => ({ ok: false, error: error.message })
+      );
+    case "margin-submit":
+      return createMarginRecord(message.payload).then(
         (result) => ({ ok: true, result }),
         (error) => ({ ok: false, error: error.message })
       );

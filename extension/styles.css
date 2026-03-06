@@ -110,6 +110,44 @@ footer {
   font-size: 0.85rem;
 }
 
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.tab {
+  padding: 6px 14px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-bottom: -2px;
+}
+
+.tab.active {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+  font-weight: 600;
+}
+
+textarea {
+  padding: 6px 8px;
+  border: 1px solid #cbd5f5;
+  border-radius: 6px;
+  background: white;
+  font: inherit;
+  resize: vertical;
+}
+
+textarea[readonly] {
+  background: #f1f5f9;
+  color: #475569;
+}
+
 main.options {
   max-width: 640px;
   margin: 0 auto;
